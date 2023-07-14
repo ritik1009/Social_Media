@@ -31,7 +31,18 @@ const AuthReducer = (state, action)=>{
           ...state,
           user: {
             ...state.user,
-            following: state.user.followings.filter((following)=>following!==action.payload)
+            following: state.user.followings.filter(
+              (following) => following !== action.payload
+            ),
+          },
+        };
+      case "REFRESHACCESSTOKEN":
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            accessToken: action.payload.accessToken,
+            refreshToken: action.payload.refreshToken,
           },
         };
       default:

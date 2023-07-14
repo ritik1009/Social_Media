@@ -6,6 +6,7 @@ import axios from 'axios';
 import {format} from 'timeago.js';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import { axiosJWT } from '../../apiCalls';
 
 const Post = ({post_data}) => {
   const[like,setLike] = useState(post_data.likes.length)
@@ -20,8 +21,8 @@ const Post = ({post_data}) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(
-        `http://localhost:8800/api/user?userId=${post_data.userId}`
+      const res = await axiosJWT.get(
+        `http://localhost:8800/api/user?userId=${post_data.userId}`,
       );
       console.log("user_data", res);
       setUser(res.data);

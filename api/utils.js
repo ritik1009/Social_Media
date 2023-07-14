@@ -6,6 +6,7 @@ const RefreshToken = require('./models/refreshToken')
 
 const verify = (req,res,next)=>{
     const authHeader = req.headers.authorization;
+    console.log("AUUUUUUUAAAAA----",authHeader)
     if (authHeader){
         const token = authHeader.split(" ")[1];
 
@@ -22,7 +23,7 @@ const verify = (req,res,next)=>{
 }
 
 const generateAccessToken=(user)=>{
-    return jwt.sign({id:user._id,isAdmin:user.isAdmin,username:user.username},secretKey,{expiresIn:"30s"})
+    return jwt.sign({id:user._id,isAdmin:user.isAdmin,username:user.username},secretKey,{expiresIn:"5m"})
 }
 
 const generateRefreshAccessToken = (user)=>{

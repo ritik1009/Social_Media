@@ -1,25 +1,32 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import AuthReducer from "./AuthReducer";
+import { axiosJWT } from "../apiCalls";
+try {
+  var user_data = JSON.parse(localStorage.getItem("user"));
+} catch (error) {
+  var user_data = {}
+}
+
 const INITIAL_STATE = {
-  user: {
-    _id: "64a6d1d7afd71e3ab5e3f9e6",
-    username: "demo9",
-    email: "demo9@gmail.com",
-    password: "$2b$10$W60KFWGIPMid9c6GitqsHuCmnqssTbAfIZwOFJmmfiEBhr2FNGHby",
-    profilePicture:
-      "https://plus.unsplash.com/premium_photo-1669050702468-d91e80be4126?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=60",
-    coverPicture:
-      "https://images.unsplash.com/photo-1688636958122-0a26b80b1b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=600&q=60",
-    isAdmin: false,
-    following:[]
-  },
+  user: user_data,
   isFetching: false,
   error: false,
 };
 
 export const AuthContext = createContext(INITIAL_STATE);
 
+const gettinngdata = async()=>{
+    const user_id = localStorage.getItem("user");
+    const res = await axiosJWT.get(
+      `http://localhost:8800/api/user?userId=${user_id}`
+    );
+    console.log("resssss ----",res)
+    return res.data
+}
 export const AuthContextProvider = ({ children }) => {
+  useEffect(()=>{
+    gettinngdata().then((data) => INITIAL_STATE.user=data);
+  },[])
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
   return (
     <AuthContext.Provider

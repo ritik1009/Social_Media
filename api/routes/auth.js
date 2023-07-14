@@ -34,6 +34,7 @@ router.post("/login",async (req,res)=>{
         if(!validateUser) return res.status(400).json("Email or Password does'nt match");
         const accessToken = generateAccessToken(user);
         const refreshToken = generateRefreshAccessToken(user);
+        const{password,updatedAt,...other} = user._doc
         try {
             const tokenRecord = await new RefreshToken({refreshToken:refreshToken,userId:user._id})
             await tokenRecord.save()
@@ -41,7 +42,7 @@ router.post("/login",async (req,res)=>{
             console.log("creating the refresh token record - ",error)
             return res.status(400).json("user is already logged in")
         }
-        res.status(200).json({user:user,accessToken:accessToken,refreshToken});
+        res.status(200).json({user:other,accessToken:accessToken,refreshToken});
     }catch(err){
         console.log(err)
         res.status(500).json(err)

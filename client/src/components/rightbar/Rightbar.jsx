@@ -6,6 +6,7 @@ import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { Add, Remove } from '@mui/icons-material';
+import { axiosJWT } from '../../apiCalls';
 const Rightbar = ({user}) => {
   const{user:currentUser,dispatch} = useContext(AuthContext)
   const [friends,setFriends] = useState([])
@@ -20,7 +21,7 @@ const Rightbar = ({user}) => {
     const getFriends = async () => {
       try {
         const friendsList = await axios.get(
-          `http://localhost:8800/api/user/friends/${user._id}`
+          `http://localhost:8800/api/user/friends/${user._id}`,
         );
         setFriends(friendsList.data);
       } catch (error) {
