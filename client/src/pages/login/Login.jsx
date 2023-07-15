@@ -9,7 +9,7 @@ const Login = () => {
   const email = useRef();
   const password = useRef();
   const navigate = useNavigate();
-  const {user, isFetching, error, dispatch} = useContext(AuthContext);
+  const {isFetching, dispatch} = useContext(AuthContext);
 
   const handleClick = (e)=>{
     e.preventDefault();
@@ -21,7 +21,6 @@ const Login = () => {
 
 
   }
-  console.log(user)
   return (
     <div className="login">
       <div className="loginWrapper">

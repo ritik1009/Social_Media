@@ -3,6 +3,7 @@ import "./share.css"
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import { axiosJWT } from "../../apiCalls";
 
 const Share = () => {
   const { user } = useContext(AuthContext);
@@ -21,14 +22,13 @@ const Share = () => {
       post.img = "http://localhost:8800/images/" + fileName;
       
       try {
-        console.log("DATA------", data);
-        await axios.post("http://localhost:8800/api/upload/"+fileName,data);
+        await axiosJWT.post("http://localhost:8800/api/upload/"+fileName,data);
       } catch (error) {
         console.log(error)
       }
     }
     try {
-      await axios.post("http://localhost:8800/api/post",post);
+      await axiosJWT.post("http://localhost:8800/api/post", post);
       window.location.reload()
     } catch (error) {
       console.log(error)

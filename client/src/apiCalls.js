@@ -8,7 +8,6 @@ export const loginCall = async(userCredentials, dispatch)=>{
     dispatch({type:"LOGIN_START"});
     try{
         const res = await axios.post("http://localhost:8800/api/auth/login",userCredentials);
-        console.log("Dispatch----",res.data);
         localStorage.setItem('aToken',res.data.accessToken)
         localStorage.setItem('rToken',res.data.refreshToken)
         localStorage.setItem('user', JSON.stringify(res.data.user))
@@ -23,8 +22,8 @@ export const loginCall = async(userCredentials, dispatch)=>{
 const RefreshToken = async () => {
     try {
         const refreshToken = localStorage.getItem('rToken')
-        const userId = localStorage.getItem('user')
-        const res = await axios.post("http://localhost:8800/api/auth/refresh/"+userId, { token: refreshToken });
+        const user = JSON.parse(localStorage.getItem("user"))
+        const res = await axios.post("http://localhost:8800/api/auth/refresh/"+user._id, { token: refreshToken });
         localStorage.setItem('aToken',res.data.accessToken)
         localStorage.setItem('rToken',res.data.refreshToken)
         return res.data;
@@ -52,3 +51,12 @@ axiosJWT.interceptors.request.use(
       return Promise.reject(error);
     }
   );
+
+axiosJWT.interceptors.response.use(
+  (response)=>{
+    return response
+    },(error)=>{
+      console.log("The Error from the Backend--",error)
+      // localStorage.clear()
+    }
+)

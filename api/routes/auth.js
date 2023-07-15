@@ -40,7 +40,8 @@ router.post("/login",async (req,res)=>{
             await tokenRecord.save()
         } catch (error) {
             console.log("creating the refresh token record - ",error)
-            return res.status(400).json("user is already logged in")
+            const old_record = await RefreshToken.findOneAndUpdate({userId:user._id},{$set:{refreshToken:refreshToken}})
+            // return res.status(200).json("user is already logged in")
         }
         res.status(200).json({user:other,accessToken:accessToken,refreshToken});
     }catch(err){

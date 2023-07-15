@@ -15,18 +15,7 @@ const INITIAL_STATE = {
 
 export const AuthContext = createContext(INITIAL_STATE);
 
-const gettinngdata = async()=>{
-    const user_id = localStorage.getItem("user");
-    const res = await axiosJWT.get(
-      `http://localhost:8800/api/user?userId=${user_id}`
-    );
-    console.log("resssss ----",res)
-    return res.data
-}
 export const AuthContextProvider = ({ children }) => {
-  useEffect(()=>{
-    gettinngdata().then((data) => INITIAL_STATE.user=data);
-  },[])
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
   return (
     <AuthContext.Provider

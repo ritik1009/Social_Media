@@ -23,7 +23,7 @@ const verify = (req,res,next)=>{
 }
 
 const generateAccessToken=(user)=>{
-    return jwt.sign({id:user._id,isAdmin:user.isAdmin,username:user.username},secretKey,{expiresIn:"5m"})
+    return jwt.sign({id:user._id,isAdmin:user.isAdmin,username:user.username},secretKey,{expiresIn:"30s"})
 }
 
 const generateRefreshAccessToken = (user)=>{

@@ -2,7 +2,6 @@ import { MoreVert } from '@mui/icons-material';
 import './post.css';
 // import {Users} from '../../dummyData';
 import { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import {format} from 'timeago.js';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
@@ -14,7 +13,6 @@ const Post = ({post_data}) => {
   const PF = import.meta.env.VITE_PUBLIC_FOLDER;
   const [user,setUser] = useState({})
   const {user:currentUser} = useContext(AuthContext)
-
   useEffect(() => {
     setisliked(post_data.likes.includes(currentUser._id));
   }, [currentUser._id, post_data.likes]);
@@ -24,14 +22,16 @@ const Post = ({post_data}) => {
       const res = await axiosJWT.get(
         `http://localhost:8800/api/user?userId=${post_data.userId}`,
       );
-      console.log("user_data", res);
       setUser(res.data);
     };
     fetchUser();
   }, [post_data.userId]);
   const likeHandler = async()=>{
     try {
-      await axios.put(`http://localhost:8800/api/post/like/${post_data._id}`,{userId:currentUser._id});
+      await axiosJWT.put(
+        `http://localhost:8800/api/post/like/${post_data._id}`,
+        { userId: currentUser._id }
+      );
     } catch (error) {
       console.log(error)
     }

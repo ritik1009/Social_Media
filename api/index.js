@@ -41,7 +41,7 @@ const verify = (req,res,next)=>{
 
         jwt.verify(token,"mySecretKey",(err,user)=>{
             if(err){
-                return res.status(403).json("Token is not Valid.")
+                return res.status(401).json("Token is not Valid.")
             }
             req.user =user;
             next();
@@ -55,7 +55,7 @@ const verify = (req,res,next)=>{
 
 
 
-app.use("/images",express.static(path.join(__dirname,"public/images")))
+app.use("/images",verify,express.static(path.join(__dirname,"public/images")))
 
 const storage = multer.diskStorage({
     

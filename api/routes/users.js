@@ -5,7 +5,7 @@ const {verify} = require("../utils")
 
 
 // Updating the User Details
-router.put('/:id', async (req,res)=>{
+router.put('/:id',verify, async (req,res)=>{
     console.log("user")
     const user = await User.findById(req.params.id)
     if(req.body.userId===req.params.id || user.isAdmin ){
@@ -29,7 +29,7 @@ router.put('/:id', async (req,res)=>{
 })
 
 // Deleting the User
-router.delete('/:id', async (req,res)=>{
+router.delete('/:id',verify, async (req,res)=>{
     const user = await User.findById(req.params.id)
     if(req.body.userId===req.params.id || user.isAdmin ){
         try{

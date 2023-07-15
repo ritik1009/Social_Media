@@ -1,10 +1,11 @@
 const router = require('express').Router();
 const Post = require('../models/post')
 const User = require('../models/users')
+const {verify} = require('../utils')
 
 // Create a post
 
-router.post('/',async(req,res)=>{
+router.post('/',verify,async(req,res)=>{
     // console.log(req.body)
     const newPost = new Post(req.body)
     console.log(newPost)
@@ -21,7 +22,7 @@ router.post('/',async(req,res)=>{
 
 // Delete a post
 
-router.delete('/:id/like',async(req,res)=>{
+router.delete('/:id/like',verify,async(req,res)=>{
     try{
         const postId = req.params.postId
         const post = Post.findById(postId)
@@ -40,7 +41,7 @@ router.delete('/:id/like',async(req,res)=>{
 
 // like a post
 
-router.put('/like/:postId',async(req,res)=>{
+router.put('/like/:postId',verify,async(req,res)=>{
     try {
         const postId = req.params.postId;
         const post = await Post.findById(postId);
@@ -60,7 +61,7 @@ router.put('/like/:postId',async(req,res)=>{
 
 // Update a post
 
-router.put('/:postId',async(req,res)=>{
+router.put('/:postId',verify,async(req,res)=>{
     try{
         console.log("PostId",postId)
         const postId = req.params.postId
@@ -80,7 +81,7 @@ router.put('/:postId',async(req,res)=>{
 // comment a post
 // get a post
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id',verify,async(req,res)=>{
     try {
         const postId = req.params.id
         const postData = await Post.findById(postId)
@@ -90,7 +91,7 @@ router.get('/:id',async(req,res)=>{
     }
 })
 
-router.get('/profile/:username',async(req,res)=>{
+router.get('/profile/:username',verify,async(req,res)=>{
     try {
         const user =await User.findOne({username:req.params.username});
         const post = await Post.find({userId:user._id});
@@ -102,7 +103,7 @@ router.get('/profile/:username',async(req,res)=>{
 
 // get timeline posts
 
-router.get("/:id/timeline",async(req,res)=>{
+router.get("/:id/timeline",verify,async(req,res)=>{
     try {
         const currentUser = await User.findById(req.params.id)
         const userPost = await Post.find({userId:req.params.id})

@@ -3,9 +3,14 @@ import "./topbar.css"
 import { Chat, Notifications, Person, Search } from "@mui/icons-material";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import LogoutIcon from "@mui/icons-material/Logout";
 const Topbar = () => {
   const {user} = useContext(AuthContext);
   const PF = import.meta.env.VITE_PUBLIC_FOLDER;
+  const logoutFunc = ()=>{
+    localStorage.clear()
+    window.location.reload()
+  }
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -41,8 +46,12 @@ const Topbar = () => {
             <Notifications />
             <span className="topbarIconBadge">4</span>
           </div>
+          <div className="topbarIconItem" onClick={logoutFunc}>
+            <LogoutIcon/>
+          </div>
         </div>
-        <Link to={"/profile/"+user.username}>
+
+        <Link to={"/profile/" + user.username}>
           <img
             src={
               user.profilePicture

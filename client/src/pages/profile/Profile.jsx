@@ -4,7 +4,7 @@ import Topbar from '../../components/topbar/Topbar';
 import './profile.css'
 import Rightbar from '../../components/rightbar/Rightbar';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { axiosJWT } from '../../apiCalls';
 import { useParams } from 'react-router-dom';
 
 const Profile = () => {
@@ -12,15 +12,13 @@ const Profile = () => {
   const [user, setUser] = useState({});
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(
+      const res = await axiosJWT.get(
         `http://localhost:8800/api/user?username=${username}`
       );
-      console.log("user_data", res);
       setUser(res.data);
     };
     fetchUser();
   }, [username]);
-  const PF = import.meta.env.VITE_PUBLIC_FOLDER;
   return (
     <>
       <Topbar />
